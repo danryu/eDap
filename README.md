@@ -1,13 +1,9 @@
-Music Player for Google Drive
+eDap :: enhanced Drive audio player
 =============================
 
-Music Player for Google Drive is a simple and lightweight online music player for your audio files stored in Google Drive. Its is entirely client side and does not require any server side component.
+eDap is an enhanced version of drive-music-player, the Music Player for Google Drive which is a simple and lightweight online music player for your audio files stored in Google Drive. Its is entirely client side and does not require any server side component.
 
-It's available [in the Chrome Web Store](https://chrome.google.com/webstore/detail/music-player-for-google-d/hnfeekfpnjbdmelcapngdgkjnhgijjkh) or you can simply visit www.driveplayer.com.
-
-It looks like this:
-
-![Music Player for Google Drive](https://github.com/nicolasgarnier/drive-music-player/raw/master/cws/screenshot_small_1.png)
+eDap uses a zero-Flash policy, using aurora.js to enable enhanced audio support including 24-bit AIFF and WAV capability.
 
 It features open-with functionality from Google Drive:
 

@@ -39,7 +39,7 @@ a:link:hover {
 }
 
 .logo {
-	background: url('/images/marquee_tile.jpg') no-repeat;
+	background: url('/images/marquee_alt.jpg') no-repeat;
     background-size: 640px;
     background-position: 50% -40px;
     width: 100%;
