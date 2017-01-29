@@ -384,18 +384,6 @@ dmp.ui.repeatToggle = function(e) {
   }
 };
 
-/**
- * Displays a message if the user does not have flash installed.
- *
- * @returns{boolean} True if the browser has flash installed.
- */
-dmp.ui.detectFlash = function() {
-  var hasFlash = false;
-  try {
-    hasFlash = swfobject.hasFlashPlayerVersion("1");
-  } catch (e) {}
-  return hasFlash;
-};
 
 // Loading tooltips.
 $(function() {

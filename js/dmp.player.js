@@ -39,19 +39,7 @@ dmp.player.hasFlash = false;
 dmp.player.flash = "no_flash";
 dmp.player.initPlayer = function(){
   var solution = "html";
-  // In the HTML5 player support most formats (like Chrome) then we only use the HTML5 player and not the Flash player.
-  if (swfobject.hasFlashPlayerVersion("9.0.0")) {
-      dmp.player.flash = "flash_ok";
-      dmp.player.hasFlash = true;
-      solution = "html";
-  }
-  // Show an error message after 1 second for users who have a flash blocker when we need flash.
-  var flashBlockerDetectionTimer = window.setTimeout(function() {
-      if(ga) {
-        ga('send', 'event', 'error', 'show_flash_blocker');
-      }
-      $('#flashAlert').show();
-    }, 1000);
+
   // Initialize the Player.
   $("#jqueryPlayerContainer").jPlayer({
       ended: dmp.player.playNext,
@@ -71,8 +59,7 @@ dmp.player.initPlayer = function(){
             $(".artist", $("#file-" + dmp.playlist.getCurrentSongId()))
                 .text("Sorry! We are unable to play this song. More...")
                 .addClass("error").attr("colspan", "2")
-                .attr("title", "Your browser might not support this audio format." +
-                    (dmp.player.hasFlash ? "" : " Try installing Flash."));
+                .attr("title", "Your browser might not support this audio format.");
               $(".title", $("#file-" + dmp.playlist.getCurrentSongId())).hide();
 
               // Tracking errors in GA.
@@ -94,8 +81,6 @@ dmp.player.initPlayer = function(){
         }
       },
       ready: function() {
-        window.clearTimeout(flashBlockerDetectionTimer);
-        $('#flashAlert').hide();
         // Start playing if we have songs.
         if (dmp.playlist.getAudioList().length > 0) {
           dmp.player.playNext();
