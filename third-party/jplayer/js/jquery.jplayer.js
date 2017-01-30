@@ -761,6 +761,11 @@
 				flashCanPlay: false,
 				media: 'audio'
 			},
+            aiff: { // PCM
+				codec: 'audio/aiff',
+				flashCanPlay: false,
+				media: 'audio'
+			},
 			webma: { // WEBM
 				codec: 'audio/webm; codecs="vorbis"',
 				flashCanPlay: false,

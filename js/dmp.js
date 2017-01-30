@@ -49,11 +49,6 @@ function init() {
 dmp.init = function() {
   dmp.addJqueryPlugins();
 
-  // If Flash is not installed and the HTML5 Player cannot be sued we display a message asking to install Flash.
-  if (!dmp.ui.detectFlash() && !dmp.player.html5PlayerIsWorking()) {
-    $('#flashAlert').show();
-    return;
-  }
   // First make sure we are authorized to access the Drive API.
   dmp.auth.initAuth(function () {
     dmp.drive.aboutGet(function (user, error) {
