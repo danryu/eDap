@@ -722,7 +722,7 @@
 		solution: { // Static Object: Defines the solutions built in jPlayer.
 			html: true,
 			aurora: true,
-			flash: true
+			flash: false
 		},
 		// 'MPEG-4 support' : canPlayType('video/mp4; codecs="mp4v.20.8"')
 		format: { // Static Object
