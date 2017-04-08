@@ -38,7 +38,8 @@ dmp.player.html5PlayerIsWorking = function(){
 dmp.player.hasFlash = false;
 dmp.player.flash = "no_flash";
 dmp.player.initPlayer = function(){
-  var solution = "aurora";
+//var solution = "aurora";
+  var solution = "html";
 
   // Initialize the Player.
   $("#jqueryPlayerContainer").jPlayer({

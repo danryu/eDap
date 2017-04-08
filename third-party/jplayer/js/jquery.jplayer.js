@@ -491,7 +491,7 @@
 		},
 		options: { // Instanced in $.jPlayer() constructor
 			swfPath: "js", // Path to jquery.jplayer.swf. Can be relative, absolute or server root relative.
-			solution: "aurora", // Valid solutions: html, flash, aurora. Order defines priority. 1st is highest,
+			solution: "html, aurora", // Valid solutions: html, flash, aurora. Order defines priority. 1st is highest,
 			supplied: "mp3", // Defines which formats jPlayer will try and support and the priority by the order. 1st is highest,
 			auroraFormats: "mp3,wav,m4a,flac,oga,aiff", // List the aurora.js codecs being loaded externally. Its core supports "wav". Specify format in jPlayer context. EG., The aac.js codec gives the "m4a" format.
 			preload: 'metadata',  // HTML5 Spec values: none, metadata, auto.
@@ -721,8 +721,8 @@
 		},
 		solution: { // Static Object: Defines the solutions built in jPlayer.
 			html: true,
-			aurora: true,
-			flash: true
+			aurora: false,
+			flash: false
 		},
 		// 'MPEG-4 support' : canPlayType('video/mp4; codecs="mp4v.20.8"')
 		format: { // Static Object

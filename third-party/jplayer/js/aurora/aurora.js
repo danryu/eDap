@@ -3782,7 +3782,7 @@ HTTPSource = (function(_super) {
         return _this.inflight = false;
       };
     })(this);
-    this.xhr.open("HEAD", this.url, true);
+    this.xhr.open("GET", this.url, true);
     return this.xhr.send(null);
   };
 

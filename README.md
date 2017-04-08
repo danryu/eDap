@@ -19,3 +19,7 @@ As well as the following features:
 
 
 > Note: This is not an official Google Product. This is a sample application demonstrating how to build a fully client side Google Drive application. It is currently deployed and running and is supported on a best effort basis.
+
+To run locally:
+$ cd eDap
+$ python3 -m  http.server 8080
