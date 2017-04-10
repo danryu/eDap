@@ -38,17 +38,15 @@ dmp.player.html5PlayerIsWorking = function(){
 dmp.player.hasFlash = false;
 dmp.player.flash = "no_flash";
 dmp.player.initPlayer = function(){
-  var solution = "aurora";
-
   // Initialize the Player.
   $("#jqueryPlayerContainer").jPlayer({
       ended: dmp.player.playNext,
-      swfPath: "/third-party/jplayer/js",
-      errorAlerts: false,
-      solution: solution,
+      // swfPath: "/third-party/jplayer/js",
+      errorAlerts: true,
+      solution: "html,aurora",
       supplied: "mp3,m4a,wav,aiff,oga,webma,fla,flac",
       keyEnabled: true,
-      preload:"auto",
+      preload: "auto",
       error: function(event) {
         // This works around a Chrome bug where long files stop playing/loading after some time.
         var time = $("#jqueryPlayerContainer").data("jPlayer").status.currentTime;
