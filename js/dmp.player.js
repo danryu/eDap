@@ -38,17 +38,15 @@ dmp.player.html5PlayerIsWorking = function(){
 dmp.player.hasFlash = false;
 dmp.player.flash = "no_flash";
 dmp.player.initPlayer = function(){
-  var solution = "aurora";
-
   // Initialize the Player.
   $("#jqueryPlayerContainer").jPlayer({
       ended: dmp.player.playNext,
-      swfPath: "/third-party/jplayer/js",
-      errorAlerts: false,
-      solution: solution,
+      // swfPath: "/third-party/jplayer/js",
+      errorAlerts: true,
+      solution: "html,aurora",
       supplied: "mp3,m4a,wav,aiff,oga,webma,fla,flac",
       keyEnabled: true,
-      preload:"auto",
+      preload: "auto",
       error: function(event) {
         // This works around a Chrome bug where long files stop playing/loading after some time.
         var time = $("#jqueryPlayerContainer").data("jPlayer").status.currentTime;
@@ -219,7 +217,8 @@ dmp.player.playFile = function(songId, stop, tracktime) {
                 "f4v":"fla",
                 "f4p":"fla",
                 "f4a":"fla",
-                "f4b":"fla"
+                "f4b":"fla",
+                "flac":"flac"
             };
 
             var mimeMapping = {
@@ -240,6 +239,8 @@ dmp.player.playFile = function(songId, stop, tracktime) {
                 "audio/x-aiff":"aiff",
                 "audio/x-flv":"fla",
                 "audio/x-flac":"flac",
+                "audio/flac":"flac",
+                "application/flac":"flac",
                 "video/mp4":"m4a",
                 "video/x-mpeg":"m4a",
                 "video/webm":"webma",
