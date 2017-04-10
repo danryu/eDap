@@ -186,7 +186,28 @@ dmp.ui.createSongEntry = function(fileInfo, callback) {
  */
 dmp.ui.buildPicker = function() {
     // List of supported MIME Types.
-    var supportedMimeType = "audio/mpeg3,audio/x-mpeg-3,audio/mp3,audio/mpeg,audio/mp4,audio/mpg,audio/mp4a-latm,audio/ogg,application/ogg,audio/webm,audio/wav,audio/x-wav,audio/wave,audio/aiff,audio/x-aiff,audio/x-flv,audio/x-flac";
+    var supportedMimeType = [
+          "audio/mpeg3",
+          "audio/x-mpeg-3",
+          "audio/mp3",
+          "audio/mpeg",
+          "audio/mp4",
+          "audio/mpg",
+          "audio/mp4a-latm",
+          "audio/ogg",
+          "application/ogg",
+          "audio/webm",
+          "audio/wav",
+          "audio/x-wav",
+          "audio/wave",
+          "audio/aiff",
+          "audio/x-aiff",
+          "audio/x-flv",
+          "audio/x-flac",
+          "application/x-flac",
+          "audio/flac"
+    ].join(',');
+
     var videoMimeType = "video/mp4,video/x-mpeg,video/webm,video/x-flv";
 
     // Search Songs in Drive View.

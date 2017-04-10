@@ -99,9 +99,16 @@
     <link type="text/css" href="css/drive-music-player.css" rel="stylesheet" />
 
     <!-- Scripts -->
+
+    <!--[if IE]>
+      <script type="text/javascript" src="js/base64.js" ></script>
+    <![endif]-->
+
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+
     <script type="text/javascript" src="third-party/jplayer/js/jquery.jplayer.js"></script>
+
     <script type="text/javascript" src="third-party/jplayer/js/aurora/aurora.js"></script>
     <script type="text/javascript" src="third-party/jplayer/js/aurora/aac.js"></script>
     <script type="text/javascript" src="third-party/jplayer/js/aurora/flac.js"></script>
@@ -109,14 +116,14 @@
     <script type="text/javascript" src="third-party/jplayer/js/aurora/ogg.js"></script>
     <script type="text/javascript" src="third-party/jplayer/js/aurora/opus.js"></script>
     <script type="text/javascript" src="third-party/jplayer/js/aurora/vorbis.js"></script>
-    <!--[if IE]>
-      <script type="text/javascript" src="js/base64.js" ></script>
-    <![endif]-->
+
     <script type="text/javascript" src="third-party/jdataview/jdataview.js"></script>
+
     <script type="text/javascript" src="third-party/id3-tag-reader/id3.js" ></script>
     <script type="text/javascript" src="third-party/id3-tag-reader/id3v2.js" ></script>
     <script type="text/javascript" src="third-party/id3-tag-reader/id3v1.js" ></script>
     <script type="text/javascript" src="third-party/id3-tag-reader/id4.js" ></script>
+
     <script type="text/javascript" src="js/dmp.auth.js" ></script>
     <script type="text/javascript" src="js/dmp.drive.js" ></script>
     <script type="text/javascript" src="js/dmp.lastfm.js" ></script>
@@ -125,10 +132,11 @@
     <script type="text/javascript" src="js/dmp.url.js" ></script>
     <script type="text/javascript" src="js/dmp.playlist.js" ></script>
     <script type="text/javascript" src="js/dmp.js" ></script>
+
   </head>
 
   <body>
-   
+
     <div id="jqueryPlayerContainer" class="jp-jplayer"></div>
 
     <div class="main-container">

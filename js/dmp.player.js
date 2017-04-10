@@ -217,7 +217,8 @@ dmp.player.playFile = function(songId, stop, tracktime) {
                 "f4v":"fla",
                 "f4p":"fla",
                 "f4a":"fla",
-                "f4b":"fla"
+                "f4b":"fla",
+                "flac":"flac"
             };
 
             var mimeMapping = {
@@ -238,6 +239,8 @@ dmp.player.playFile = function(songId, stop, tracktime) {
                 "audio/x-aiff":"aiff",
                 "audio/x-flv":"fla",
                 "audio/x-flac":"flac",
+                "audio/flac":"flac",
+                "application/flac":"flac",
                 "video/mp4":"m4a",
                 "video/x-mpeg":"m4a",
                 "video/webm":"webma",

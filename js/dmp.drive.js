@@ -50,7 +50,7 @@ dmp.drive.listFiles = function(folderId, callback, retryCounter, items, folders)
     gapi.client.drive.files.list({'q': "'"+folderId+"' in parents and trashed=false",'fields':'items(id, mimeType)'}).execute(function(resp){
       // We got an error object back so we can check it out.
       if (resp && resp.error) {
-        console.log("Error while listing files: ", resp.error);
+        console.error("Error while listing files: ", resp.error);
         // If the issue is that auth has expired we refresh and retry.
         if (resp.error.code == 401
             && resp.error.data[0].reason == "authError"
@@ -115,7 +115,7 @@ dmp.drive.getFileUrl = function(fileId, callback, retryCounter) {
     gapi.client.drive.files.get({'fileId': fileId}).execute(function(resp){
       // We got an error object back so we can check it out.
       if (resp && resp.error) {
-        console.log("Error while fetching the file's metadata: "
+        console.error("Error while fetching the file's metadata: "
             + resp.error.message);
         // If the issue is that auth has expired we refresh and retry.
         if (resp.error.code == 401
@@ -168,7 +168,7 @@ dmp.drive.aboutGet = function(callback, retryCounter) {
     gapi.client.drive.about.get({'fields': "user/emailAddress"}).execute(function(resp){
       // We got an error object back so we can check it out.
       if (resp && resp.error) {
-        console.log("Error while fetching about: ", resp.error);
+        console.error("Error while fetching about: ", resp.error);
         // If the issue is that auth has expired we refresh and retry.
         if (resp.error.code == 401
             && resp.error.data[0].reason == "authError"
@@ -219,8 +219,8 @@ dmp.drive.uploadThumbnailFromUrl = function(fileId, albumUrl) {
     });
     request.execute(function(resp) {
       if (resp.error) {
-        console.log(resp.error);
-        console.log(body);
+        console.error(resp.error);
+        console.error(body);
       }
     });
   });
@@ -298,8 +298,8 @@ dmp.drive.saveTagsInProperty = function(fileId, title, artist, md5) {
     });
     request.execute(function(resp) {
       if (resp.error) {
-        console.log(resp.error);
-        console.log(body);
+        console.error(resp.error);
+        console.error(body);
       }
     });
 
@@ -314,8 +314,8 @@ dmp.drive.saveTagsInProperty = function(fileId, title, artist, md5) {
     });
     request.execute(function(resp) {
       if (resp.error) {
-        console.log(resp.error);
-        console.log(body);
+        console.error(resp.error);
+        console.error(body);
       }
     });
 
@@ -330,8 +330,8 @@ dmp.drive.saveTagsInProperty = function(fileId, title, artist, md5) {
     });
     request.execute(function(resp) {
       if (resp.error) {
-        console.log(resp.error);
-        console.log(body);
+        console.error(resp.error);
+        console.error(body);
       }
     });
   });
@@ -351,7 +351,7 @@ dmp.drive.readTagsFromProperty = function(fileId, callback) {
       if (!resp.items) {
         callback(null, null, null);
         if (resp.error) {
-          console.log(resp.error);
+          console.error(resp.error);
         }
       } else {
         var title = null;
