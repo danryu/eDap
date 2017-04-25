@@ -43,7 +43,9 @@ dmp.player.initPlayer = function(){
       ended: dmp.player.playNext,
       // swfPath: "/third-party/jplayer/js",
       errorAlerts: true,
-      solution: "html,aurora",
+      // FIXME EDAP - hack THINGS HERE
+      //solution: "html,aurora",
+      solution: "aurora",
       supplied: "mp3,m4a,wav,aiff,oga,webma,fla,flac",
       keyEnabled: true,
       preload: "auto",

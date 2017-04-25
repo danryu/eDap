@@ -1,0 +1,24 @@
+<html>
+
+  <script src="third-party/jplayer/js/aurora/aurora.js"></script>
+  <script src="third-party/jplayer/js/aurora/mp3.js"></script>
+  <script src="third-party/jplayer/js/aurora/flac.js"></script>
+  <script src="third-party/jplayer/js/aurora/ogg.js"></script>
+  <script src="third-party/jplayer/js/aurora/aac.js"></script>
+
+    <input type="file" id="file-selector" />
+    <script>
+        /* var AV = require('av'); */
+
+        var fileSelector = document.getElementById("file-selector");
+
+        fileSelector.onchange = function() {
+            var audioFile = fileSelector.files[0];
+
+            var audioPlayer = AV.Player.fromFile(audioFile);
+
+            audioPlayer.play();
+        };
+    </script>
+    
+ </html>
