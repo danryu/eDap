@@ -1,0 +1,2014 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Cloud FLAC, MP3, AAC Player</title>
+<meta name="description" content="Listen to high quality music on your browser and Google Drive. You can open audio files from your Google Drive and from your computer. Supports FLAC, MP3, AAC(m4a, mp4), WAV, AIFF, AU, CAF audio files.">
+<meta name="keywords" content="flac player, online flac player, flac player for google drive, online mp3 player, mp3 player for google drive, aac player, m4a player, aiff player, au player, caf player">
+
+<meta property="og:title" content="Cloud FLAC, MP3, AAC Player"> 
+<meta property="og:description" content="Listen to high quality music on your browser and Google Drive. You can open audio files from your Google Drive and from your computer. Supports FLAC, MP3, AAC(m4a, mp4), WAV, AIFF, AU, CAF audio files.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://flacplayer.ehubsoft.net/">
+<meta property="og:image" content="http://flacplayer.ehubsoft.net/img/logo128.png">
+
+<link rel="shortcut icon" href="./favicon.ico">
+<head>
+<style>
+body,table,td,span,select,input,textarea,button{
+	font-size:14px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+body{background:#e3e3e3;}
+A:link    {color:#0860A8;text-decoration:none;}
+A:visited {color:#0860A8;text-decoration:none;}
+A:active  {color:#0860A8;text-decoration:underline;}
+A:hover  {color:#0860A8;text-decoration:underline;}
+.divopt{
+	-webkit-box-shadow: 0 0 10px #999;
+	-moz-box-shadow: 0 0 10px #999;
+	box-shadow: 0 0 10px #999;
+}
+.input{width:630px;}
+.small{font-size:13px;}
+</style>
+
+<script src="js/common.js"></script>
+
+<script>
+var gadb=false;
+function init(){
+}
+</script>
+</head>
+<body onload="init()">
+
+<table align=center>
+<tr><td height=10>
+</table>
+
+<table id="maintable" width=810 border=0 align=center class="divopt" style="background-color:white;padding:6px 6px 6px 6px;border: 0px solid #2E79DB;">
+<tr><td>
+<center>
+<script type="text/javascript">
+    google_ad_client = "ca-pub-1113541014872557";
+    google_ad_slot = "9411897503";
+    google_ad_width = 728;
+    google_ad_height = 15;
+</script>
+<script type="text/javascript"
+src="//pagead2.googlesyndication.com/pagead/show_ads.js" onerror="gadb=true;">
+</script>
+</center>
+
+<table width=100%><tr>
+<td><img src="img/logo65.png" width=65>
+<td>
+<td><a id="toptitle" href="./" title="Go Home" style="color:#1667A0"><span style="font-size:27px;font-family:Verdana, Arial;white-space:nowrap;">Cloud FLAC, MP3, AAC Player</span></a>
+<div style="margin-left:2px;margin-top:3px">
+Listen to high quality music on your browser and Google Drive.
+You can open audio files from your Google Drive and from your computer.<br>
+Supports FLAC, MP3, AAC(m4a, mp4), WAV, AIFF, AU, CAF(Core Audio) audio files.<br>
+FLAC, MP3 Player is an audio player app for playing your Lossless Audio Codec files or simply flac file extension.
+It's very easy to use. You can control you playback like Play, Pause, Volume, Playlist and all common controls in any audio player.<br>
+You don't need to install any further software, flash or plugin to play FLAC, MP3, AAC files.<br>
+<!--Supports Chrome, Firefox, Safari...<br>//-->
+<span style="color:green" title="Play (Enter, Double Click), Remove (Del), Move Up (Alt+Up), Move Down (Alt+Down)">Playlist Shortcuts [?]</span>
+&nbsp;<label><input type=checkbox id="c_scansub" onclick="setstorage('c_scansub',this.checked)"> Scan all sub-folders (Google Drive)</label>
+</div>
+</table>
+
+<tr><td>
+<center>
+<script type="text/javascript">
+    google_ad_client = "ca-pub-1113541014872557";
+    google_ad_slot = "2028231506";
+    google_ad_width = 728;
+    google_ad_height = 90;
+</script>
+<script type="text/javascript"
+src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</center>
+
+<tr><td>
+<script>
+function get_data(){
+	var s=getstorage("c_filedata3");
+	if (!s) s="[]";
+	var a=[];
+	try{
+		a=JSON.parse(s);
+	}catch(err){
+		a=[];
+	}
+	if(!a) a=[];
+	return a;
+}
+
+function proc_savetohistory(){
+	var subject=getstorage('c_lastsubject') || '';
+	subject=prompt("Please enter a title or name.",subject);	
+	if(!subject){
+		//alert('You need to enter the subject.');
+		return;
+	}
+	setstorage('c_lastsubject',subject);
+	var b={};
+	b.id=(new Date()).getTime();
+	b.subject=subject;
+	b.files=[];
+	var d;
+	for(var i= 0; i <= gd_files.length-1;i++){
+		if(!gd_files[i].id || gd_files[i].f)continue;
+		d={};
+		d.id=gd_files[i].id;
+		d.name=gd_files[i].name;
+		if(gd_files[i].resp){
+			d.resp={};
+			d.resp.id=gd_files[i].resp.id;
+			d.resp.title=gd_files[i].resp.title;
+			d.resp.fileSize=gd_files[i].resp.fileSize;
+			d.resp.alternateLink=gd_files[i].resp.alternateLink;
+			d.resp.webContentLink=gd_files[i].resp.webContentLink;
+			//d.resp.parents=gd_files[i].resp.parents;
+		}
+		b.files.push(d);
+	}
+	if(b.files.length==0){
+		alert('No files to save. Drive file list can be saved.');
+		return;
+	}
+
+	var a=get_data();
+	a.push(b);
+	if(a.length>15) a.splice(0,1);
+	if(window.JSON) setstorage("c_filedata3",JSON.stringify(a));		
+	
+	proc_displayhistory();
+	var obj=_getid('history');
+	if(obj.options.length>=2) obj.selectedIndex=1;
+}
+function proc_displayhistory(){
+	var obj=_getid('history');
+	var a=get_data();
+	
+	for(var i=obj.options.length-1;i>=0;i--) obj.remove(i);
+	var c=document.createElement("option");
+	c.value='';
+	c.appendChild(document.createTextNode('*File History'));		         
+	obj.appendChild(c);		
+
+	var s;
+	for(var i=a.length-1;i>=0;i--){
+		var c=document.createElement("option");
+		c.value=a[i].id;		
+		s=a[i].subject+' ('+datetimetostring(a[i].id)+')';
+		c.appendChild(document.createTextNode(s));		         
+		obj.appendChild(c);		
+	}
+}
+
+function proc_historychange(){
+	var obj=_getid('history');
+	if(!obj.value)return;
+	var a=get_data();
+	for(i = 0; i < a.length; i++){
+		if(a[i].id==obj.value){
+			if(a[i].files && a[i].files.length>0){
+				attach_clear();								
+				var d,s;
+				var obj=_getid("attachment");
+				for(var j = 0; j <= a[i].files.length-1;j++){
+					d=a[i].files[j];
+					gd_files_count++;
+					d.idx=gd_files_count;
+					if(!d.resp){
+						d.resp={};
+						d.resp.id=d.id;
+						d.resp.title=d.name;
+					}
+					var c=document.createElement("option");
+					s=d.name;
+					if(d.resp.fileSize) s+=' ('+getsize(d.resp.fileSize)+')';	
+					c.value=d.idx;
+					c.appendChild(document.createTextNode(s));		 
+					obj.appendChild(c);		
+					gd_files.push(d);
+				}
+				_getid("downlink").innerHTML="Add files, folders to the list below. Select from Google Drive. <span id=spancount></span>";
+				gd_count();		
+			}
+			break;
+		}
+	}
+}
+function proc_deletehistory(){
+	var obj=_getid('history');
+	if(!obj.value)return;
+	var a=get_data();
+	for(i = 0; i < a.length; i++){
+		if(a[i].id==obj.value){
+			a.splice(i,1);
+			if(window.JSON) setstorage("c_filedata3",JSON.stringify(a));
+			var idx=obj.selectedIndex;
+			obj.remove(idx);
+			if(idx>obj.options.length-1) idx=obj.options.length-1;
+			obj.selectedIndex=idx;
+			break;
+		}
+	}
+}
+function proc_clearhistory(){
+	for(i = 1; i <= 2; i++){
+		var answer=confirm("All stored history will be deleted. ["+i+"/2]"+"\n\n"+"Are you sure?");				
+		if(!answer) return;
+	}
+	setstorage("c_filedata3","[]");
+	var obj=_getid('history');
+	for(var i=obj.options.length-1;i>=1;i--) obj.remove(i);
+}
+
+function proc_show(name){
+	var a=_getid(name);
+	if(!a)return;
+	if(a.style.display=='') a.style.display='none';
+	else a.style.display='';
+}
+</script>
+
+<style>
+.uploaded{color:green;}
+.error{color:#8A0808;}
+.welcome{color:#45616D;}
+.bold1{color:green;}
+.log{width:100%;height:240px;}
+.big1{font-size:20px;}
+#logtab a{
+	font-size:14px;
+}
+#gd_progress{width:650px;white-space:nowrap;overflow:hidden;border:0px solid red;}
+#gd_progress2{width:610px;white-space:nowrap;overflow:hidden;border:0px solid red;}
+</style>
+	<table width=100%>					
+		<tr><td>			
+			<div id="divopen">
+			<button type="button" id='btn_open' onclick="gd_open_picker()" title="Select files and folders from Google Drive" style=""><img src="images/gdrive/product16.png" width=16 align="absmiddle"> Select files from Google Drive</button>
+			<button type="button" onclick="attach_delete()">Remove</button>
+			<button type="button" onclick="attach_clear()">Clear</button>					
+			<!--<button type="button" onclick="proc_sample()">Sample</button>//-->
+			<button onclick="proc_opensetting()" title="Save and Load settings using Google Drive"><img src="images/gdrive/product16.png" width=12 align="absmiddle"> Save, Load</button>
+			<div id="dfile1" style="display:inline"></div>			
+			</div>
+		<!--
+		<tr><td>
+			<label><input type=checkbox id="c_addonly" onclick="setstorage('c_addonly',this.checked)"> Add only supported formats</label>
+		//-->
+		<tr><td>			
+			<div id="downlink" style="margin-bottom:2px">Add files, folders to the list below. Select from Google Drive. <span id=spancount></span></div>
+			<select id='attachment' style="width:100%;height:250px" multiple=true onchange="attachment_onchange()" onclick="attachment_onchange()" ondblclick="player_play()"></select>
+
+			<div id="desc" style="margin-top:2px;color:green;width:700px;white-space:nowrap;overflow:hidden;border:0px solid red"></div>
+			<!--<span id="spandown"></span>//-->
+			<!--<div style="">Sound is distorted? &nbsp;<a href="#" onclick="return false;" style=""></a></div>//-->
+		<tr><td>
+			<table align=center>
+			<td><button type=button onclick="proc_savetohistory()">Save this list</button>
+			<td><select id='history' onchange="proc_historychange()" style="width:300px"></select>
+			<td><button type=button onclick="proc_historychange()" title="Select"><img src="images/commit.png"></button>
+			<td><button type=button onclick="proc_deletehistory()" title="Delete"><img src="images/close.png"></button>
+			<td><button type=button onclick="proc_clearhistory()" title="Clear all">Clear</button>
+			<td><button type=button onclick="proc_show('optplaylist');_getid('squery').focus();">Playlist Search, Sort</button>		
+			</table>
+
+<div id="optplaylist" style="display:none;border:2px dashed #0860A8;padding:3px;margin:5px 0px">
+<table align=center><tr><td>
+<table cellpadding=0 cellspacing=0><tr>
+<td>
+<form onsubmit="player_search();return false" style="display:inline">
+Search <input type=text style="width:260px" id="squery" placeholder="Enter a search word." onkeyup="player_search(event,true)">
+</form>
+<td width=15>
+<td><select id="sorttype">
+<option value=4>Sort by Original (No Sort)
+<option value=0>Sort by Filename (Ascending)
+<option value=1>Sort by Filename (Descending)
+<option value=2>Sort by Filesize (Ascending)
+<option value=3>Sort by Filesize (Descending)
+</select>
+<button type=button onclick="proc_sort()">Sort Playlist</button>
+</table>
+<tr><td>
+*Playlist Shortcuts<br>
+Play (Enter, Double Click), Remove (Del), Move Up (Alt+Up), Move Down (Alt+Down)
+</table>
+</div>
+
+<table align=center><tr>
+<td><button id="play" onclick="player_play('',-1,true)" class=big1>Play / Pause</button> <button id="stop" onclick="player_stop(true)" class=big1>Stop</button>
+<td><button id="stop" onclick="player_next(true)">Prev</button> <button id="stop" onclick="player_next()">Next</button>
+<td>
+<td><select id="loop" onchange="loop_onchange()" style="width:150px">
+<option value=0>No Loop
+<option value=1>Loop Current File
+<option value=2>Loop All Files
+<option value=3>Loop All Files (Random)
+</select>
+<td>
+<td>Volume<td><input id="volume" type="range" min="0" max="100" step="1" value="50" onchange="volume_onchange()" style="width:140px"><td><div id="volume2" style="width:40px"></div>
+</table>
+
+<table align=center><tr>
+<td><div style="margin-top:5px">Progress</div>
+<td>
+	<table style="margin-left:2px;margin-right:2px">
+	<tr><td><div id="buffered" style="width:500px;margin-bottom:3px"><div id="buffered2" style="background-color:#1667A0;width:0px;height:5px"></div></div>
+	<tr><td><input id="progress" type="range" min="0" max="100" step="1" value=0 style="width:500px;padding:0px;margin:0px;" onmousedown="progress_onmousedown()" onmousemove="progress_onmousemove()" onmouseup="progress_onmouseup()">
+	</table>
+<td><div id="progress2" style="margin-top:5px">00:00/00:00</div>
+</table>
+<div id="au_entry6981" style="display:none"></div>
+
+		<tr><td>			
+			<div id="downlink2" style="margin-bottom:2px"></div>				
+			<div id="downlink3" style="margin-bottom:2px"></div>
+			<div id="songinfo" style="margin-bottom:0px"></div>
+
+<table><tr><td>&nbsp;
+<td>Convert character encoding for MP3 meta data: 
+<select id="c_encoding" onchange="c_encoding_onchange()">
+<option value="">No convert encoding
+<optgroup label="Arabic"><option value="IBM-864">IBM-864<option value="IBM-864-I">IBM-864-I<option value="ISO-8859-6">ISO-8859-6<option value="ISO-8859-6-E">ISO-8859-6-E<option value="ISO-8859-6-I">ISO-8859-6-I<option value="MacArabic">MacArabic<option value="Windows-1256">Windows-1256<optgroup label="Armenian"><option value="ARMSCII-8">ARMSCII-8<optgroup label="Baltic"><option value="ISO-8859-13">ISO-8859-13<option value="ISO-8859-4">ISO-8859-4<option value="Windows-1257">Windows-1257<optgroup label="Celtic"><option value="ISO-8859-14">ISO-8859-14<optgroup label="Central European"><option value="IBM-852">IBM-852<option value="ISO-8859-2">ISO-8859-2<option value="MacCE">MacCE<option value="Windows-1250">Windows-1250<optgroup label="Chinese Simplified"><option value="GB18030">GB18030<option value="GB2312">GB2312<option value="GBK">GBK<option value="HZ">HZ<option value="ISO-2022-CN">ISO-2022-CN<optgroup label="Chinese Traditional"><option value="Big5">Big5<option value="Big5-HKSCS">Big5-HKSCS<option value="EUC-TW">EUC-TW<optgroup label="Croatian"><option value="MacCroatian">MacCroatian<optgroup label="Cyrillic"><option value="IBM-855">IBM-855<option value="ISO-8859-5">ISO-8859-5<option value="ISO-IR-111">ISO-IR-111<option value="KOI8-R">KOI8-R<option value="MacCyrillic">MacCyrillic<option value="Windows-1251">Windows-1251<optgroup label="Cyrillic/Russian"><option value="CP-866">CP-866<optgroup label="Cyrillic/Ukrainian"><option value="KOI8-U">KOI8-U<option value="MacUkrainian">MacUkrainian<optgroup label="English"><option value="US-ASCII">US-ASCII<optgroup label="Farsi"><option value="MacFarsi">MacFarsi<optgroup label="Georgian"><option value="GEOSTD8">GEOSTD8<optgroup label="Greek"><option value="ISO-8859-7">ISO-8859-7<option value="MacGreek">MacGreek<option value="Windows-1253">Windows-1253<optgroup label="Gujarati"><option value="MacGujarati">MacGujarati<optgroup label="Gurmukhi"><option value="MacGurmukhi">MacGurmukhi<optgroup label="Hebrew"><option value="IBM-862">IBM-862<option value="ISO-8859-8-E">ISO-8859-8-E<option value="ISO-8859-8-I">ISO-8859-8-I<option value="MacHebrew">MacHebrew<option value="Windows-1255">Windows-1255<optgroup label="Hebrew Visual"><option value="ISO-8859-8">ISO-8859-8<optgroup label="Hindi"><option value="MacDevanagari">MacDevanagari<option value="SunDevanagari">SunDevanagari<optgroup label="Icelandic"><option value="MacIcelandic">MacIcelandic<optgroup label="Japanese"><option value="EUC-JP">EUC-JP<option value="ISO-2022-JP">ISO-2022-JP<option value="Shift_JIS">Shift_JIS<optgroup label="Korean"><option value="EUC-KR">EUC-KR<option value="ISO-2022-KR">ISO-2022-KR<option value="JOHAB">JOHAB<option value="UHC">UHC<optgroup label="Nordic"><option value="ISO-8859-10">ISO-8859-10<optgroup label="Romanian"><option value="ISO-8859-16">ISO-8859-16<option value="MacRomanian">MacRomanian<optgroup label="South European"><option value="ISO-8859-3">ISO-8859-3<optgroup label="Thai"><option value="IBM-874">IBM-874<option value="ISO-8859-11">ISO-8859-11<option value="TIS-620">TIS-620<option value="Windows-874">Windows-874<optgroup label="Turkish"><option value="IBM-857">IBM-857<option value="ISO-8859-9">ISO-8859-9<option value="MacTurkish">MacTurkish<option value="Windows-1254">Windows-1254<optgroup label="Unicode"><option value="UTF-16">UTF-16<option value="UTF-16BE">UTF-16BE<option value="UTF-16LE">UTF-16LE<option value="UTF-32">UTF-32<option value="UTF-32BE">UTF-32BE<option value="UTF-32LE">UTF-32LE<option value="UTF-7">UTF-7<option value="UTF-8">UTF-8<optgroup label="Vietnamese"><option value="TCVN">TCVN<option value="VISCII">VISCII<option value="VPS">VPS<option value="Windows-1258">Windows-1258<optgroup label="Western"><option value="IBM-850">IBM-850<option value="ISO-8859-1">ISO-8859-1<option value="ISO-8859-15">ISO-8859-15<option value="MacRoman">MacRoman<option value="Windows-1252">Windows-1252
+</select>
+<td><td><label title="Play mp3, m4a, mp4 format using browser HTML5 player"><input type=checkbox id="c_bplayer" onclick="setstorage('c_bplayer',this.checked)"> Use Browser HTML5 Player</label>
+</table>
+
+			</table>
+
+<tr><td>
+<tr><td align=center>
+<script type="text/javascript">
+    google_ad_client = "ca-pub-1113541014872557";
+    google_ad_slot = "2028231506";
+    google_ad_width = 728;
+    google_ad_height = 90;
+</script>
+<script type="text/javascript"
+src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</table>
+
+<script>
+var ischrome=false;
+if (navigator.userAgent.indexOf("Chrome")>=0) ischrome=true;
+
+function init_load(){
+	proc_displayhistory();
+	var sw=_getid('attachment').offsetWidth;
+	for(var i = 1; i <= 10; i++){
+		var a=_getid("log"+i);
+		if(a){
+			if(ischrome) a.setAttribute("readonly", "true");
+			a.setAttribute("spellcheck", "false");
+			a.setAttribute("wrap", "off");
+			a.style.width=sw+'px';
+		}
+	}
+}
+init_load();
+</script>
+
+<style>
+a.bottomlink:link{text-decoration:underline;}
+a.bottomlink:visited{text-decoration:underline;}
+a.bottomlink:active{text-decoration:underline;}
+a.bottomlink:hover{text-decoration:underline;}
+</style>
+
+<table id="bottomtable" align=center>
+<tr><td height=7>
+<tr><td align=center><span id="bottomtitle">2017, ⓒ Cloud FLAC, MP3, AAC Player</span>
+	</table><br>
+
+<style>
+.hover { border: 5px dashed #333; }
+.gd_div{background-color:#FFFFE1;position:absolute;overflow:hidden;-webkit-box-shadow: 0 0 25px #999;-moz-box-shadow: 0 0 25px #999;box-shadow: 0 0 25px #999;}
+</style>
+<div id="layer_message" class="gd_div" style="z-index:10001;display:none;"></div>
+<div id="gd_window" class="gd_div" style="z-index:10000001;display:none;"></div>
+<div id="gd_btn_login" class="gd_div" style="z-index:10000000;display:none;">
+<table>
+<tr><td align=center><button onclick="gd_login_manual()" style="font-size:20px"><img src="images/gdrive/product20.png" align="absmiddle"> Login & Authorize</button> <button onclick="gd_login_close()" style="font-size:20px">Close</button>
+<tr><td>To use this app, Please login to the Google Drive and authorize this app or website.
+<br>(Note: If your browser block or disable the third-party cookies, this login does not work correctly.)
+</table>
+</div>
+<script>
+var CLIENT_ID = '24038650308-hkuou7bgtg871lo9t07tpt4ee5jqsfim.apps.googleusercontent.com';
+var SCOPES = [
+	'https://www.googleapis.com/auth/drive.install',
+	'https://www.googleapis.com/auth/drive.readonly',
+	'https://www.googleapis.com/auth/drive.appfolder'
+];
+var gd_developerKey='AIzaSyDc7Q9iWl4crbcmuFZIpzqcOSolbzwJkhI';
+var gd_mimetype="audio/mpeg,audio/flac,audio/mp4,audio/aac,video/mp4,application/x-flac,audio/x-flac,audio/webm,video/webm,audio/mpeg3,audio/x-mpeg-3,audio/ogg,application/ogg,audio/x-wav,audio/x-aiff,audio/basic";
+//application/octet-stream
+var gd_export_extension=[];
+var gd_state='';
+
+var gd_picker,gd_loaded,gd_pickerloaded,gd_lastprogress,gd_issupported,gd_isdownloading,gd_load_timer,gd_bloburl,gd_state2;
+var gd_loginexp=0;
+var gd_callback;
+var ismsie=false;
+if(navigator.appName!="Netscape"){
+	if(navigator.userAgent.indexOf("MSIE")>=0) ismsie=true;
+}
+var issafari=false;
+var ua = navigator.userAgent.toLowerCase(); 
+if (ua.indexOf('safari') != -1 && ua.indexOf('chrome') <0){ 
+	issafari=true;
+}
+
+function gd_btn_login2(e,callback){
+	function go(a){
+		if(a && a.style.display==''){
+			var x=getScrollLeft()+((getWindowWidth()-a.clientWidth) / 2);
+			var y=getScrollTop()+((getWindowHeight()-a.clientHeight) / 2);
+			a.style["border"]="1px solid #000000";
+			a.style["padding"]="10px";
+			a.style.left=x+"px";
+			a.style.top=y+"px";
+		}
+	}
+	go(_getid("gd_btn_login"));
+	go(_getid("gd_window"));	
+	setTimeout(function(){
+		go(_getid("gd_btn_login"));
+		go(_getid("gd_window"));	
+		if(callback)callback();
+	},10);
+}
+function gd_btn_login(isshow){
+	var a=_getid("gd_btn_login");
+	if(isshow){
+		a.style.display='';
+		gd_btn_login2();
+	}else{
+		a.style.display='none';
+	}
+}
+function gd_login_close(){
+	gd_btn_login(false);
+	gd_state='';
+}
+function gd_login_manual(){
+	var p={'client_id': CLIENT_ID, 'scope': SCOPES.join(' '), 'immediate': false};
+	if(gd_userId){p['login_hint']=gd_userId;p['authuser']=-1;}
+	gapi.auth.authorize(p, function (authResult){ 
+		if (authResult && !authResult.error){
+			gd_loginexp=(new Date()).getTime()+parseInt(authResult.expires_in*0.7*1000);
+			gd_btn_login(false);gd_info();
+			show_message("Login ok!!");
+			if(gd_callback) gd_callback(true);
+			else gd_open_state(true);
+		}else{
+			gd_btn_login(true);
+			show_message("Login failed!!");
+		}
+	});
+}
+function gd_login(callback,react){
+	if(gd_loginexp==0 || gd_loginexp<(new Date()).getTime()){
+	}else{
+		callback(true);
+		return;
+	}
+	var p={'client_id': CLIENT_ID, 'scope': SCOPES.join(' '), 'immediate': true};
+	if(gd_userId){p['login_hint']=gd_userId;p['authuser']=-1;}
+	gapi.auth.authorize(p, function (authResult){
+		if (authResult && !authResult.error){
+			gd_loginexp=(new Date()).getTime()+parseInt(authResult.expires_in*0.7*1000);
+			gd_btn_login(false);gd_info();
+			callback(true);
+		}else{
+			show_message("Login failed!!");
+			gd_btn_login(true);
+			callback(false);
+			if(react) gd_callback=callback;
+			else gd_callback=null;
+		}
+	});
+}
+function gd_checklogin(callback){
+	gd_login(function(result){
+		if(result)callback();
+	},true);
+}
+
+function gd_loadpicker() {		
+	gapi.load('picker',{'callback': function(){
+			gd_pickerloaded=true;
+		}
+	});	
+}
+function gd_createpicker() {
+	var access_token=gapi.auth.getToken().access_token;
+	if(!access_token){
+		alert('Error!! No access token.');
+		return;
+	}
+	if(!gd_picker){
+	  var view2 = new google.picker.DocsView(google.picker.ViewId.DOCS);
+	  //if(gd_mimetype) view2.setMimeTypes(gd_mimetype);
+	  //var view3 = new google.picker.DocsView(google.picker.ViewId.DOCS);
+
+		var view4 = new google.picker.DocsView();
+		view4.setIncludeFolders(true);
+		view4.setSelectFolderEnabled(true);
+		view4.setParent("root");		
+		view4.setMimeTypes(gd_mimetype);
+		var view5 = new google.picker.View(google.picker.ViewId.RECENTLY_PICKED);
+
+      gd_picker = new google.picker.PickerBuilder()
+          //.enableFeature(google.picker.Feature.NAV_HIDDEN)
+          .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+		  .setLocale("en")
+		  .setTitle('Select files and folders')
+          .setOAuthToken(access_token)
+          .addView(view2)
+		  .addView(view4)
+		  //.addView(view3)
+		  .addView(view5)
+          //.addView(new google.picker.DocsUploadView())
+          .setDeveloperKey(gd_developerKey)
+          .setCallback(gd_pickercallback)
+          .build();
+	}
+	gd_picker.setVisible(true);
+}
+function gd_pickercallback(data) {
+	if (data.action == google.picker.Action.PICKED) {
+		if(data.docs && data.docs.length>0){
+			gd_loadfiles(data.docs);
+		}
+	}
+}
+function gd_count(){
+	var a=_getid('spancount');
+	if(a && gd_files) a.innerHTML="("+gd_files.length+" Added)";
+}
+
+var gd_files=[];
+var gd_files_count=0;
+function gd_addfiles(files,addall){
+		var c_addonly=true;
+		var d,s;
+		var a=_getid("attachment");
+		for(var i = 0; i <= files.length-1; i++){
+			d=files[i];
+			if(!d.resp || !d.resp.title || d.resp.mimeType=='application/vnd.google-apps.folder')continue;
+			var c=document.createElement("option");
+			gd_files_count++;
+			d.idx=gd_files_count;
+			c.value=d.idx;
+			s='';
+			if(d.resp.exportLinks && !getSupported(d.resp)){
+				s='[Not Supported] ';
+				if(c_addonly)continue;
+			}
+			if(c_addonly && !addall && !d.resp.exportLinks && !getSupported2(d.resp))continue;
+			if(d.parent) s+=d.parent+'/';
+			s=s+d.resp.title+' ('+getsize(d.resp.fileSize)+')';	
+			if(d.f) s+=' (Local File)';
+			c.appendChild(document.createTextNode(s));		 
+			a.appendChild(c);		
+			gd_files.push(files[i]);
+		}		
+		_getid("downlink").innerHTML="Add files, folders to the list below. Select from Google Drive. <span id=spancount></span>";
+		gd_count();		
+}
+function gd_loadfiles(docs){
+	if(gd_isdownloading){
+		alert("It's working... Please try again later.");
+		return;
+	}
+
+	function end(){
+		gd_isdownloading=false;
+		clearTimeout(messagetimer);
+		hide_message();
+		var a=_getid("downlink");
+		if(a.innerHTML && a.innerHTML.indexOf("adownlink")<0){
+			_getid("downlink").innerHTML="Add files, folders to the list below. Select from Google Drive. <span id=spancount></span>";
+		}
+	}	
+	var canceled=false;
+	_getid("downlink").innerHTML="<table><tr><td><img src='images/wait.gif' align='absmiddle'><td><a href='#' id='gd_cancel'>Cancel</a><td><div id='gd_progress'>Getting file information...</div></table>";	
+	_getid('gd_cancel').onclick=function(){
+		canceled=true;
+		return false;
+	}
+	gd_isdownloading=true;
+	if(!docs){
+		end();return;
+	}
+
+	var files=[];
+	for(var i = 0; i <= docs.length-1; i++){
+		if(!docs[i].id)continue;
+		var d={};
+		d.id=docs[i].id;
+		d.name=docs[i].name;
+		d.done=false;
+		files.push(d);
+	}
+	
+	function complete(){
+		gd_addfiles(files);
+	}
+
+	var joblist=[];
+	var jobtimer;
+	function getentryidx(){
+		for(var i = 0; i <= files.length-1; i++){
+			if(!files[i].done){
+				files[i].done=true;
+				return i;
+			}
+		}
+		return null;
+	}
+	function checkjoblist(){
+		if(joblist.length==0)return;
+		for(var i = 0; i <= joblist.length-1; i++){
+			if(!joblist[i].complete)return;
+		}
+		clearInterval(jobtimer);
+		end();
+		complete();
+	}
+	
+	var c_scansub=_getid('c_scansub').checked;
+	function get(jobidx){
+		function _call(){
+			var a=joblist[jobidx];
+			a.func(jobidx)
+		}
+		var idx=getentryidx();
+		if(idx==null || canceled){
+			joblist[jobidx].complete=true;
+			return;
+		}
+		if(files[idx].resp){			
+			_call();
+			return;
+		}
+
+		function _progress(s){
+			var a=_getid("gd_progress");
+			if(a) a.innerHTML='('+(idx+1)+'/'+files.length+') '+henc(s);
+		}
+		var folderlist;
+		function getfolder(folderidx){
+			if(folderidx>folderlist.length-1 || canceled){
+				_call();
+				return;
+			}
+			_progress('Getting files in the folder... '+folderlist[folderidx].name);
+			retrieveAllFiles("'"+folderlist[folderidx].id+"' in parents and trashed=false", function(results){
+				var parent=folderlist[folderidx].parent || '';
+				if(parent) parent+='/';
+				parent+=folderlist[folderidx].name || '';
+
+				for(var i = 0; i <= results.length-1; i++){
+					var d={};
+					d.id=results[i].id;
+					d.name=results[i].title;
+					d.resp=results[i];
+					d.parent=parent;
+					d.done=true;
+					files.push(d);
+					if(c_scansub && d.resp.mimeType=='application/vnd.google-apps.folder'){
+						folderlist.push(d);
+					}
+				}		
+				folderidx++;			
+				getfolder(folderidx);
+			});		
+		}
+
+		var fileId=files[idx].id;
+		_progress('Getting file info...');
+
+			var request = gapi.client.drive.files.get({
+				'fileId': fileId, 'fields':'id,title,fileSize,alternateLink,webContentLink,parents/id,mimeType,exportLinks,downloadUrl'
+			});
+			request.execute(function(resp){				
+				if(resp.error){
+					var s='Error. ';
+					if(files[idx].name) s+=files[idx].name+'  ';
+					if(resp.error.message) s+=resp.error.message+' ';
+					if(resp.error.code==401) s+='Login or Authorize Error.';					
+					_log("log4",s,"error");
+				}
+				files[idx].resp=resp;
+				if(!files[idx].name) files[idx].name=resp.title;
+
+				if(files[idx].resp.mimeType=='application/vnd.google-apps.folder'){
+					folderlist=[];
+					folderlist.push(files[idx]);
+					getfolder(0);
+				}else{
+					_call();
+				}
+			});
+	}
+
+	if(files.length==0){
+		end();return;
+	}
+	gapi.client.load('drive', 'v2', function(){
+		jobtimer=setInterval(checkjoblist,200);
+		for(var i = 0; i < 2; i++){
+			var a={};
+			a.func=get;
+			a.complete=false;
+			joblist.push(a);
+			a.func(i);
+		}
+	});
+}
+
+function retrieveAllFiles(query,callback) {
+	var fields='items(id,title,fileSize,alternateLink,webContentLink,parents/id,mimeType,exportLinks,downloadUrl),nextPageToken';
+  var retrievePageOfFiles = function(request, result) {
+    request.execute(function(resp) {
+      result = result.concat(resp.items);
+      var nextPageToken = resp.nextPageToken;
+      if (nextPageToken) {
+        request = gapi.client.drive.files.list({
+          'q': query, 'pageToken': nextPageToken, 'fields':fields
+        });
+        retrievePageOfFiles(request, result);
+      } else {
+        callback(result);
+      }
+    });
+  }
+  var initialRequest = gapi.client.drive.files.list({
+		'q': query, 'fields':fields
+       });
+  retrievePageOfFiles(initialRequest, []);
+}
+
+var g_supportimgs='flac,mp3,m4a,aac,mp4,ogg,opus,wav,wave,aif,aiff,caf,au,';
+function getSupported2(d){
+	var arr=d.title.split('.');
+	if(arr.length>1){
+		if(g_supportimgs.indexOf(arr[arr.length-1].toLowerCase()+',')>=0){
+			return true;
+		}
+	}
+}
+function getSupported(d){
+	/*var m=d.mimeType || '';
+	if(m.indexOf('vnd.google-apps.document')>=0 || m.indexOf('vnd.google-apps.presentation')>=0 || m.indexOf('vnd.google-apps.drawing')>=0){ 
+		return true;
+	}*/
+}
+
+function proc_logincheck(){
+	_getid("log4").innerHTML='';
+	_getid("log5").innerHTML='';	
+	var b=_getid("gd_progress2");
+	if(b) b.innerHTML='';
+	_log("log4",'Login checking...','welcome');
+}
+
+function attach_move(direct){
+	var a=gd_files;
+	var c=_getid("attachment");
+	if(c.options.length==0) return;
+
+	var k=0;
+	for (var i = 0 ; i < c.options.length; i++) {		
+		if (c.options[i].selected) k++;
+	}
+	if (k!=1){
+		alert("Please select one.");
+		return;
+	}
+	if (direct==1){ //down
+		for (var i = c.options.length - 2; i >= 0; i--) {
+  			var b = c.options[i];
+  			if (b.selected) {
+				var nextOpt = c.options[i+1];
+				b = c.removeChild(b);
+				nextOpt = c.replaceChild(b, nextOpt);
+				c.insertBefore(nextOpt, b);
+				c.selectedIndex=i+1;
+				
+				var c=a[i];
+				var d=a[i+1];
+				a[i+1]=c;
+				a[i]=d;				
+				break;
+			}
+		}	
+	} else { //up
+		for (var i = 0 ; i < c.options.length; i++) {		
+			var b=c.options[i];
+			if (b.selected) {
+				if (i==0) break;
+	  			c.removeChild(b);
+   				c.insertBefore(b, c[i-1]);		
+				c.selectedIndex=i-1;
+   				
+				var c=a[i];
+				var d=a[i-1];
+				a[i-1]=c;
+				a[i]=d;
+				break;
+			}
+		}	
+	}
+}
+function attach_delete(){
+	function remove(idx){
+		for(var i = 0; i <= gd_files.length-1; i++){
+			if(gd_files[i].idx==idx){
+				if(!gdata || gdata.idx!=gd_files[i].idx){
+					if(gd_files[i].buffer) delete gd_files[i].buffer;
+				}
+				gd_files.splice(i,1);
+				return;
+			}
+		}
+	}
+	var a=_getid("attachment");
+	var k=-1;
+	for(var i=a.options.length-1;i>=0;i--){
+		if(a.options[i].selected){
+			remove(a.options[i].value);
+			a.remove(i);
+			k=i;
+		}
+	}
+	if (k>a.options.length-1) k=a.options.length-1;
+	if (k>=0){
+		a.selectedIndex=k;
+	}
+	gd_count();		
+}
+function attach_clear(){
+	var a=_getid("attachment");
+	for(var i=a.options.length-1;i>=0;i--) a.remove(i);
+	for(var i = 0; i <= gd_files.length-1; i++){
+		if(!gdata || gdata.idx!=gd_files[i].idx){
+			if(gd_files[i].buffer) delete gd_files[i].buffer;
+		}
+	}
+	gd_files=[];
+	gd_count();		
+}
+function attachment_onchange(){
+	//_getid("spandown").innerHTML='';
+	function _down(data){
+			var resp=data.resp;
+			var obj=_getid("spandown");
+			if(!obj)return;
+			if(gd_files[i].f){
+				obj.innerHTML='(Local File)';
+				return;
+			}
+			if(resp.downloadUrl){
+				obj.innerHTML='&nbsp;<a id="adownlink" target="_blank">Download this file</a>'; //&nbsp; ('+getsize(resp.fileSize)+')';
+				var a=_getid("adownlink");
+				if(a){
+					var s1=resp.downloadUrl;
+					if(!resp.issample){
+						var accessToken=gapi.auth.getToken().access_token;
+						s1+='&access_token='+encodeURIComponent(accessToken);
+					}
+					a.href=s1;
+					a.download=resp.title;
+					a.title=resp.title;
+				}
+			}
+	}
+	function find(idx){
+		var resp;
+		for(var i = 0; i <= gd_files.length-1; i++){
+			if(gd_files[i].idx==idx){
+				resp=gd_files[i].resp;
+				var s='<font color=black>'+(i+1)+')</font> ';
+				var link=resp.alternateLink || resp.webContentLink;
+				if(link) s+='<a href="'+link+'" target="_blank" title="View this file">'+henc(resp.title)+'</a>';
+				else s+=henc(resp.title);
+				s+=' ('+getsize(resp.fileSize)+')';
+				if(resp.parents && resp.parents[0] && resp.parents[0].id){
+					s+=' &nbsp;<a href="'+gd_weburl()+'#folders/'+resp.parents[0].id+'" target="_blank" onclick="gd_clickweburl(this)" title="Show Folder, Folder ID: '+resp.parents[0].id+'">Folder</a>';
+				}
+				_getid("desc").innerHTML=s+' <span id="spandown" style="color:black"></span>';
+				_down(gd_files[i]);					
+				return;
+			}
+		}
+	}
+	var a=_getid("attachment");
+	for(var i=a.options.length-1;i>=0;i--){
+		if(a.options[i].selected){
+			find(a.options[i].value);
+			break;
+		}
+	}
+}
+
+function gd_open_picker(){
+	if(!gd_issupported){
+		alert("This browser does not support.");
+		return;
+	}
+	if(!gd_loaded || !gd_pickerloaded){
+		if(!gd_load_timer) gd_loadscript(gd_open_picker);
+		else alert('Not loaded library. Please try again later.');
+		return;
+	}
+	gd_checklogin(function(){
+		gd_createpicker();
+	});
+}
+function gd_getparam(s,name){
+	name=name+"=";
+	name=name.toLowerCase();
+	var p1=s.toLowerCase().indexOf(name);
+	if (p1<0) return "";
+	s=s.substr(p1+name.length);
+	var p2=s.toLowerCase().indexOf("&");
+	if (p2>=0) {
+		return s.substr(0,p2);
+	} else {
+		return s;
+	}
+}
+function gd_open_state(force){
+	var s=gd_state;
+	if(s){
+		if(!gd_issupported){
+			gd_state='';
+			alert("This browser does not support.");
+			return;
+		}
+		s=decodeURIComponent(s);
+		try{
+			var a=JSON.parse(s);
+			var ids=[];
+			function find(b){
+				if(!b)return;
+				for(var i=0; i <= b.length-1; i++){
+					if(b[i]){
+						var cc={};
+						cc.id=b[i];
+						ids.push(cc);
+					}
+				}
+			}
+			find(a.ids);
+			find(a.exportIds);
+			if(ids.length>0){
+				gd_login(function(result){
+					if(gd_open2 && !force)return;
+					gd_open2=true;
+					if(!result) return;
+					//_getid('gd_btn_reopen').style.display='';
+					gd_state='';
+					gd_loadfiles(ids);
+				});				
+			}
+		}catch(err){
+		}
+	}
+}
+function gd_clientload(){
+	gd_loaded=true;
+	if (window.addEventListener){
+		window.addEventListener("resize", gd_btn_login2, false);
+	}else if (window.attachEvent){
+		window.attachEvent("onresize", gd_btn_login2);
+	}
+	gd_open_state();
+}
+var gd_open2;
+function gd_open_state2(){
+	setTimeout(function(){
+		if(!gd_open2)gd_open_state();
+	}, 1000);
+}
+
+function gd_loadscript(callback){
+	function inject(s){
+		var o = document.createElement('scri' + 'pt');
+		o.setAttribute('src', s);
+		o.setAttribute('type', 'text/javascript');
+		document.body.appendChild(o);
+	}
+	if(gd_load_timer)return;
+	if(gd_loaded && gd_pickerloaded)return;
+	gd_load_timer=setInterval(function(){
+		if(gd_loaded && gd_pickerloaded){
+			clearInterval(gd_load_timer);
+			if(callback) callback();
+		}
+	},100);
+	inject('https://apis.google.com/js/client.js?onload=gd_clientload');
+	inject('https://apis.google.com/js/api.js?onload=gd_loadpicker');	
+}
+function gd_dblclick(){
+	function dblclick(){
+		try{
+			if(gd_picker)gd_picker.setVisible(false);
+		}catch(err){}
+	}
+	function keydown(e){
+		if(!e)e=window.event;
+		if(e && e.keyCode==27) dblclick();
+	}
+	if(window.addEventListener){
+		document.addEventListener("dblclick", dblclick, false);
+		document.addEventListener("keydown", keydown, false);
+	}else if(window.attachEvent){
+		document.attachEvent("ondblclick", dblclick);
+		document.attachEvent("onkeydown", keydown);
+	}
+}
+var gd_userId,gd_email;
+function gd_weburl(){
+	var s;
+	if(gd_email) s='https://drive.google.com/?authuser='+encodeURIComponent(gd_email);
+	else s='https://drive.google.com/';
+	return s;
+}
+function gd_clickweburl(f){
+	var s=f.href || '';
+	var p1=s.indexOf('#');
+	if(p1<0) s='';
+	else s=s.substr(p1,s.length);
+	f.href=gd_weburl()+s;
+}
+function gd_info(){
+	if(gd_email)return;
+	gapi.client.load('drive', 'v2', function(){
+		var request = gapi.client.drive.about.get();
+		request.execute(function(resp) {
+			if(resp && resp.user){
+				if(gd_email)return;
+				gd_email=resp.user.emailAddress;
+				if(gd_email){
+					var a=_getid('btn_open');
+					var b=_getid('gd_btn_reopen');
+					if(a)a.title=a.title+' ('+gd_email+')';
+					if(b)b.title=b.title+' ('+gd_email+')';
+				}				
+			}
+		});
+	});
+}
+function gd_init(){
+	if(getstorage('c_scansub')=='true')_getid('c_scansub').checked=true;
+	//if(getstorage('c_addonly')=='true')_getid('c_addonly').checked=true;	
+	if(getstorage('c_bplayer')=='true')_getid('c_bplayer').checked=true;	
+	gd_dblclick();
+	gd_state2=gd_state;
+	if(!window.XMLHttpRequest || !window.FileReader){
+	}else{
+		gd_issupported=true;
+		if(gd_state){
+			try{
+				var a=JSON.parse(gd_state);
+				gd_userId=a.userId;
+				if(a.ids || a.exportIds){
+					_getid("downlink").innerHTML="<table><tr><td><div id='gd_progress'>Ready...</div></table>";
+				}
+			}catch(err){}			
+			if(window.addEventListener) window.addEventListener("load", gd_open_state2, false);
+			else if (window.attachEvent) window.attachEvent("onload", gd_open_state2);
+		}
+		gd_loadscript();
+	}
+}
+gd_init();
+</script>
+
+<script src="http://iblogbox.github.io/js/flacplayer/aurora2.js"></script>
+<script src="http://iblogbox.github.io/js/flacplayer/flac.js"></script>
+<script src="http://iblogbox.github.io/js/flacplayer/mp3.js"></script>
+<script src="http://iblogbox.github.io/js/flacplayer/aac.js"></script>
+<script src="http://iblogbox.github.io/js/flacplayer/alac.js"></script>
+
+<script>
+var gdata;
+var g_maxdown=100;
+var player;
+
+function proc_sample(){
+	var arr=[['test.flac','115960']];
+	var list=[];
+	for(var i=0; i <= arr.length-1; i++){
+		var a={};
+		a.resp={};
+		a.resp.title=arr[i][0];
+		a.resp.fileSize=parseInt(arr[i][1]);
+		a.resp.downloadUrl='sample/'+arr[i][0];
+		a.resp.issample=true;
+		list.push(a);
+	}
+	gd_addfiles(list);	
+}
+function handleFileSelect(files) {
+	if(!window.FileReader){
+		alert("This browser does not support.");
+		return;
+	}
+	if(gd_isdownloading){
+		alert("It's working. Please try again later.");
+		return;
+	}
+	
+	if(!files || files.length==0) return;	
+	var list=[];
+	for(var i = 0, f; f = files[i]; i++){
+		var a={};
+		a.f=f;
+		a.resp={};
+		a.resp.title=f.name;	
+		a.resp.fileSize=f.size;
+		list.push(a);
+	}
+	gd_addfiles(list,true);	
+}
+
+function player_next(isprev,isloop){
+		if(!gdata){
+			player_play('',-1,true);
+			return;
+		}
+		var v=_getid('loop').value;
+		var a=_getid("attachment");
+		var c=a.options.length;
+		if(c==0){
+			show_message("No files.");
+			return;
+		}
+		if(v==3){			
+			var d=Math.floor(Math.random() * c);
+			if(a.options[d]) player_play(a.options[d].value, d);
+		}else{ 
+			for(var i=0; i <= a.options.length-1; i++){
+				if(a.options[i].value==gdata.idx){
+					var i2;
+					if(isprev){
+						if(a.options[i-1]) i2=i-1;
+						else{
+							show_message("It's first.");
+							return;
+						}
+					}else{
+						if(a.options[i+1]) i2=i+1;
+						else{
+							show_message("It's last.");
+							return;
+						}
+					}
+					player_play(a.options[i2].value, i2);
+					return;
+				}
+			}
+			player_play('',-1,true);
+		}
+}
+
+function player_elasped(fdata){
+	var b=false;
+	if(!fdata.f && !fdata.resp.issample){
+		if(fdata.time){
+			var now=(new Date()).getTime();
+			var d=now-fdata.time;
+			if((d>0 && d/1000/60 > 25) || (gd_loginexp>0 && gd_loginexp<now)) b=true;
+		}else{
+			b=true;
+		}
+	}
+	return b;
+}
+function player_play(idx,idx2,control){
+	if(gadb){alert('Please disable the adblock for free use.');return;}	clearTimeout(looptimer);
+	function f_download(callback,fdata){
+		var resp=fdata.resp;
+		if(gd_isdownloading){
+			show_message("It's working... Please try again later.");
+			return;
+		}
+
+		function _error(s){
+			_progress(s, 'error');
+			_end({'error':s});
+		}
+		function _end(result){
+			gd_isdownloading=false;
+			var c=_getid('gd_cancel');if(c) c.style.display='none';
+			callback(result);
+		}
+		function _progress(s,state){
+			if(!state) state='uploaded';
+			var s1='<font class="'+state+'">'+henc(s)+'</font> '+henc(resp.title);
+			//if(!nolog) proc_log('log1',s1);
+			var a=_getid("gd_progress2");
+			if(a) a.innerHTML=s1;
+		}	
+		
+		gd_isdownloading=true;
+		_getid("downlink2").innerHTML="<table><tr><td><a href='#' id='gd_cancel' style='display:none' title='Cancel this task'>Cancel</a>&nbsp;<td><div id='gd_progress2'></div></table>";		
+		/*if(resp.fileSize && resp.fileSize>g_maxdown*1024*1024){
+			_error('Error. The maximum size is about '+g_maxdown+' megabytes available.');
+			return;
+		}*/
+
+		if(fdata.f){
+			_progress('Found the file.');
+			_end();
+			return;
+		}
+
+		var c=_getid('gd_cancel');
+		if(c){
+			c.style.display='';
+			c.onclick=function(){												
+				_end();
+				clearTimeout(looptimer);
+				return false;
+			}
+		}
+		_progress('Getting File Info...','welcome');
+		var downloadurl=resp.downloadUrl;		
+		if(player_elasped(fdata)) downloadurl='';
+		
+		function _down(){
+			_progress('Found the download URL.');
+			fdata.downloadurl=downloadurl;
+			_end();
+		}
+		function _get(){
+			var request = gapi.client.drive.files.get({
+				'fileId': resp.id
+			});
+			request.execute(function(result){				
+				if(result.error){
+					var s='Error. ';
+					if(result.error.message) s+=result.error.message+' ';
+					if(result.error.code==401) s+='Login or Authorize Error.';					
+					_error(s);
+				}else{
+					downloadurl=result.downloadUrl;
+					if(downloadurl){
+						resp=result; //update
+						fdata.resp=result;			
+						fdata.time=(new Date()).getTime();
+						var a=_getid("attachment");
+						for(var i=0; i <= a.options.length-1; i++){
+							if(a.options[i].value==fdata.idx){
+								var s=''; if(fdata.parent) s+=fdata.parent+'/';
+								s=s+resp.title+' ('+getsize(resp.fileSize)+')'
+								a.options[i].text=s;	
+								break;
+							}
+						}
+						attachment_onchange();
+
+						var accessToken = gapi.auth.getToken().access_token;
+						downloadurl+='&access_token='+encodeURIComponent(accessToken);
+						gaccesstoken=accessToken;
+						_down();
+					}else{
+						_error('Error. Can not find a Download URL.');
+					}					
+				}
+			});
+		}
+
+		if(downloadurl){			
+			if(!resp.issample){
+				var accessToken = gapi.auth.getToken().access_token;						
+				downloadurl+='&access_token='+encodeURIComponent(accessToken);
+				gaccesstoken=accessToken;
+			}
+			_down();
+		}else if(!resp.issample){
+			gapi.client.load('drive', 'v2', function(){
+				_get();
+			});
+		}else{
+			_error('Error. Can not find a Download URL.');
+		}
+	}
+
+	function find(idx){
+		for(var i = 0; i <= gd_files.length-1; i++){
+			if(gd_files[i].idx==idx){
+					function go(){
+						f_download(function(){
+							gdata=gd_files[i];
+							if(gd_files[i].f || gd_files[i].downloadurl){
+								handleInput();
+							}else{
+								proc_error('',true);
+							}
+						},gd_files[i]);
+					}
+					if(gd_files[i].f || gd_files[i].resp.issample){
+						go();
+					}else{
+						gd_checklogin(function(){
+							go();
+						});					
+					}
+				return true;
+			}
+		}
+	}
+	
+	function toggle(){
+		if(player) player.togglePlayback();
+		//html5
+		var c=_getid("audio5");
+		if(c && c.src && c.src2!='stop'){
+			if(c.paused) c.play();
+			else c.pause();
+		}
+	}
+
+	var a=_getid("attachment");
+	if(a.options.length==0){
+		if(gdata){
+			toggle();
+		}else{
+			alert('No selected files.');
+		}
+		return;
+	}
+	if(!idx){
+		for(var i=0; i <= a.options.length-1; i++){
+			if(a.options[i].selected){
+				idx=a.options[i].value;
+				idx2=i;
+				break;
+			}
+		}
+	}
+	if(!idx){
+		idx=a.options[0].value;
+		idx2=0;
+	}
+	
+	if(control && gdata && gdata.idx==idx){
+		toggle();
+		return;
+	}
+	if(find(idx)){ 
+		if(idx2!=undefined && idx2>=0){
+			for(var i=0; i <= a.options.length-1; i++){
+				if(a.options[i].selected) a.options[i].selected=false;
+			}
+			a.selectedIndex=idx2;
+			attachment_onchange();
+		}		
+	}
+}
+
+function player_log(s,state){
+	if(!state) state='uploaded';
+	var s1='<font class="'+state+'">'+henc(s)+'</font>';
+	s1="<table><tr><td>&nbsp;<td>"+s1+"</table>";
+	_getid('downlink3').innerHTML=s1;
+}
+function proc_imgerr(f){
+	f.onerror=null;
+	f.src='img/logo128.png';
+}
+
+var playertimer, looptimer;
+var gmeta, webaudio;
+function enc_convert(){
+	if(!gmeta)return;
+	var enc=_getid('c_encoding').value;
+	if(!enc) enc='ISO-8859-1';
+	function go(str,name){
+		var bytes = new Uint8Array(str.length);
+		for (var i=0; i<str.length; i++){
+			bytes[i] = str.charCodeAt(i);
+		}
+		var blob = new Blob([bytes], {type: 'text/plain'});
+		var reader = new FileReader();
+		reader.onload = function(e){
+			var a=_getid('m_'+name);
+			if(a) a.innerHTML=henc(e.target.result);
+		};
+		reader.onerror = function(){
+		};
+		if(reader.readAsText) reader.readAsText(blob,enc);
+	}
+	for (x in gmeta){
+		if(gmeta[x].text){
+			go(gmeta[x].text,x);
+		}
+	}
+}
+function c_encoding_onchange(){
+	enc_convert();
+	setstorage('c_encoding',_getid('c_encoding').value);
+}
+
+var handletimer,puniqid;
+function handleInput(){
+	if(!gdata)return;
+	if(player){
+		player_stop();
+		clearInterval(handletimer);
+		handletimer=setTimeout(handleInput2,500);
+	}else{
+		handleInput2();
+	}
+}
+function handleInput2(){
+	if(!gdata)return;
+	var s1='<table><tr><td>&nbsp;<td><img src="img/logo128.png" width=90 height=90><td><td>';
+	if(gdata.resp){
+		s1+='File Name: '+henc(gdata.resp.title)+'<br>';
+		s1+='File Size: '+getsize(gdata.resp.fileSize)+'<br>';
+	}
+	s1+='</table>';
+	_getid('songinfo').innerHTML=s1;
+
+	if(!webaudio){
+		if(supporthtml5()) player_html5();
+		else{
+			player_stop();
+			proc_error('This browser does not supported HTML5 Web Audio. Support only mp3, m4a, mp4, wav format.');
+		}
+		return;
+	}else{
+		if(supporthtml5_2()){
+			player_html5();
+			return;
+		}
+	}
+
+	if(gdata.f){
+		if(gdata.f.size==0){
+			proc_error('File size is zero. or File not found.',true);return;
+		}
+		player = AV.Player.fromFile(gdata.f);
+	}else{
+		glength=gdata.resp.fileSize;
+		var url=gdata.downloadurl;
+		if(gaccesstoken) url='https://www.googleapis.com/drive/v2/files/'+gdata.resp.id+'?alt=media';
+		player = AV.Player.fromURL(url);
+	}
+	player.iserror=false;
+	volume_onchange();
+	player_log('Loading...','welcome');
+
+	puniqid=(new Date()).getTime();
+	player.uniqid=puniqid;
+	player.on('metadata', function(data) {
+		//console.log(data);		
+		function check(s,name){
+			if(s.indexOf('\x01\x01')==0){ 
+				gmeta[name]={};
+				gmeta[name].text=trim(s);
+			}
+			return henc(trim(s));
+		}
+		gmeta={};		
+		var s1;
+		var s='<table><tr><td>&nbsp;';
+		if(data.coverArt) s1=data.coverArt.toBlobURL();
+		else s1='img/logo128.png';
+		s+='<td><img src="'+s1+'" width=90 height=90 onerror="proc_imgerr(this)">';
+		s+='<td><td>';
+
+		s+='Title: <span id="m_title">'+check(data.title || 'Unknown Title','title')+'</span><br>';
+		s+='Artist: <span id="m_artist">'+check(data.artist || 'Unknown Artist','artist')+'</span><br>';
+
+		s+='Album: <span id="m_album">'+check(data.album || 'Unknown Album','album')+'</span>';
+		s+='&nbsp;&nbsp;<span id="m_genre">(Genre: '+check(data.genre || 'Unknown Genre','genre')+')</span><br>';
+
+		s+='Date: <span id="m_date">'+check(data.date || data.year || 'Unknown Date','date')+'</span><br>';
+		s+='Vendor: <span id="m_vendor">'+check(data.vendor || data.encodedWith || 'Unknown Vendor','vendor')+'</span><br>';
+		s+='</table>';
+		_getid('songinfo').innerHTML=s;
+		enc_convert();
+    });
+	var isready;
+	player.on('buffer', function(percent){
+		if(puniqid!=this.uniqid)return;
+		//bufferposition=player.duration*(percent/100);			
+		var a=_getid('buffered');
+		var b=_getid('buffered2');
+		var w=Math.floor(a.offsetWidth*(percent/100));
+		b.style.width=w+'px';
+		//console.log('buffer: '+percent+','+player.currentTime);
+		if(percent==100){
+			clearTimeout(gstocktimer);
+			gstocktimer=setTimeout(function(){			
+				if(!isready && player.currentTime==0 && !player.iserror){
+					proc_error('It does not seem to be playing. Try another.');
+				}
+			},3000);
+		}
+	});
+	player.on('progress', function(position){
+		if(!gprogressdown && puniqid==this.uniqid){
+			var a=_getid('progress');
+			a.max=player.duration;
+			a.value=position;
+			var b=_getid('progress2');
+			b.innerHTML=gettime(position)+'/'+gettime(player.duration);
+		}
+		//console.log('progress: '+position+','+player.duration);
+	});
+	var lastctime=0;
+	player.on('ready', function(){
+		isready=true;
+		//html5
+		var c=_getid("audio5");
+		if(c){c.pause();c.src2='stop';}
+		_getid("au_entry6981").style.display='none';		
+
+		player_log('Ready.');
+		clearInterval(playertimer);
+		playertimer=setInterval(function(){			
+			if(player.playing) player_log('Ready.');
+			else player_log('Paused.','error');
+
+			if(player.playing && lastctime>0 && lastctime==player.currentTime && player.format && player.format.formatID=='mp3'){
+				var lt=lastctime;
+				var mt=Math.floor(player.duration-(player.duration*0.1));
+				var r=Math.floor((Math.random() * 15) + 1);
+				if(lt>mt) lt=mt;
+				r=lt+r;
+				if(r<player.duration){
+					player.seek(r);
+					return;
+				}
+			}
+			lastctime=player.currentTime;
+		},1000);
+	});
+	player.on('end', function(){
+		var p1=player.seek(0);
+		var v=_getid('loop').value;
+		if(v==1){
+			if(player_elasped(gdata) || p1==-1){
+				player_play(gdata.idx,-1);
+			}else{
+				setTimeout(function(){
+					lastctime=0;
+					player.play();
+				},500);
+			}
+		}else if(v==2 || v==3){
+			player_next(false,true);
+		}
+	});
+	player.on('error', function(err){
+		if(puniqid!=this.uniqid)return;
+		var s;
+		if(err && (typeof err=='string')) s=err;
+		if(!s) s='It does not recognize that format. Try another.';
+		proc_error(s);
+	});
+	player.play();
+}
+
+//html5
+var g_audiointerval;
+function _getfrmdoc(ifrm){
+	return (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+}
+window.URL=window.URL || window.webkitURL;
+var g_mediasupport=null;
+function proc_testmedia(){
+	if(g_mediasupport==null){
+		var a= document.createElement("audio");
+		g_mediasupport={'mp3': !!(a && a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, '')), 'm4a':!!(a && a.canPlayType && a.canPlayType('audio/mp4;').replace(/no/, '')), 'mp4':!!(a && a.canPlayType && a.canPlayType('video/mp4;').replace(/no/, ''))};
+	}
+	return g_mediasupport;
+}
+function player_html5(){
+	player_stop();
+
+	var src;
+	if(gdata.f){
+		if(gdata.f.size==0){			
+			proc_error('File size is zero. or File not found.',true);return;
+		}
+		if(gd_bloburl) window.URL.revokeObjectURL(gd_bloburl);
+		gd_bloburl=window.URL.createObjectURL(gdata.f);
+		src=gd_bloburl;
+	}else{
+		src=gdata.downloadurl;
+	}
+	
+	proc_testmedia();
+	var a=_getid("au_entry6981");	
+	if(!a)return;
+	a.style.display='';
+		var s,c;
+		var filetype='mp3';//getextension(gdata.resp.title) || 'mp3';
+		if(g_mediasupport[filetype]){
+			s='<audio id="audio5" style="width:100%" controls autoplay></audio>';
+		}else{
+			proc_error('Sorry, This media type does not supported on this browser.',true);
+			return;
+		}
+		c=_getid("audio5");
+		var anew;
+		if(!c){		
+			a.innerHTML='<table width="580" align=center><tr><td>'+s+'</table>';
+			c=_getid("audio5");anew=true;
+		}
+		if(!c)return;
+			c.src=src;			
+			c.src2=src;
+			var s=getstorage('c_volume') || 50;
+			c.volume=parseInt(s)/100;
+
+			if(c.addEventListener){
+			  if(anew){
+				c.addEventListener("volumechange", function(){
+					var v=Math.floor(this.volume*100);
+					if(v>100) v=100;
+					_getid('volume').value=v;
+					volume_onchange(true);
+				}, false);
+				c.addEventListener("ended", function(){
+					if(!c.src || c.src2=='stop')return;
+					var v=_getid('loop').value;
+					if(v==1){
+						if(player_elasped(gdata)){
+							player_play(gdata.idx,-1);
+						}else{
+							c.currentTime=0;
+							c.play();
+						}
+					}else if(v==2 || v==3){
+						player_next(false,true);
+					}
+				}, false);
+			  }
+
+				clearInterval(g_audiointerval);
+				g_audiointerval=setInterval(function(){
+					if(!c.src || c.src2=='stop')return;
+					var s;
+					if(c.networkState==1) s='Media is active.';
+					else if(c.networkState==2) s='Downloading data...';
+					else if(c.networkState==3) s='No media source found.';
+					else if(c.networkState==0) s='Media has not yet been initialized.';
+					if(s){
+						if(c.networkState==3 || c.networkState==0){
+							clearInterval(g_audiointerval);
+							if(issafari) _getid("au_entry6981").style.display='none';		
+							proc_error(s,true);return;
+						}else{
+							player_log(s);
+						}
+					}
+					if(c.networkState==1 && c.paused){
+						player_log('Paused.','error');
+					}
+				},500);
+			}
+		return true;
+}
+function getextension(s){
+	var arr=(s || '').split('.');
+	if(arr.length>1){
+		return arr[arr.length-1].toLowerCase();
+	}
+	return '';
+}
+function supporthtml5(){
+	var s=getextension(gdata.resp.title);
+	var s2='mp3,m4a,mp4,wav,';
+	if(s && s2.indexOf(s+',')>=0) return true;
+}
+function supporthtml5_2(){
+	if(_getid('c_bplayer').checked && supporthtml5()) return true;
+	var s=getextension(gdata.resp.title);
+	if(s=='opus' || s=='ogg' || s=='wav' || s=='wave') return true;
+	var s2='mp3,mp4,';
+	if(s && s2.indexOf(s+',')>=0 && gdata.resp.fileSize>100*1024*1024) return true;
+}
+
+var gerror2timer, gstocktimer;
+function proc_error2(s){
+	if(s=='Underflow Error'){
+		var b=player.buffered;
+		if(b>=100)return;
+		clearTimeout(gerror2timer);
+		gerror2timer=setTimeout(function(){			
+			if(b==player.buffered) proc_error(s);
+		},3000);
+	}
+}
+function proc_error(s,nohtml5){
+	if(s) player_log(s,'error');
+	if(player) player.iserror=true;
+	if(!nohtml5 && player && player.currentTime>0)return;
+	//html5
+	if(!nohtml5 && gdata && s.indexOf("Error (status)")!=0){
+		if(supporthtml5()){
+			if(player_html5()) return;
+		}
+	}
+	var v=_getid('loop').value;
+	if(v==2 || v==3){		
+		clearTimeout(looptimer);
+		looptimer=setTimeout(function(){
+			if(!gdata)return;			
+			player_next(false,true);
+		},2000);
+	}	
+}
+function gettime(t){
+	t=Math.floor(t/1000);
+	var s=fillnumber(Math.floor(t/60))+':'+fillnumber(t%60);
+	return s;
+}
+function player_stop(control){
+	if(control) gdata='';
+	if(player) player.stop();
+	_getid('progress').value=0;
+	_getid('progress').max=0;
+	_getid('progress2').innerHTML='00:00/00:00';
+	_getid('buffered2').style.width='0px';		
+	clearInterval(playertimer);
+	clearTimeout(looptimer);
+	clearTimeout(gerror2timer);
+	clearTimeout(gstocktimer);	
+	player_log('Stopped.','welcome');
+	//html5
+	clearInterval(g_audiointerval);
+	var c=_getid("audio5");
+	if(c){
+		c.pause();c.src2='stop';
+	}
+}
+
+var gprogressdown,progresstimer;
+function progress_onmousedown(){
+	gprogressdown=true;
+}
+function progress_onmouseup(){
+	gprogressdown=false;
+	if(!player || player.duration==0 || player.buffered==0)return;
+
+	var v=_getid('progress').value;
+	var pos=player.duration*(player.buffered/100);
+	if(player.buffered<100) pos=pos-(pos*0.15);
+	if(v>(pos-2000)) v=pos-2000;
+	if(v>=0 && v<pos){
+		var p1=player.seek(v);
+		if(p1!=-1){
+			/*player.pause();
+			player.play();
+			progresstimer=setTimeout(function(){
+			},50);*/
+		}else{			
+			player.pause();
+			player.play();
+		}
+	}
+}
+function progress_onmousemove(){
+	if(gprogressdown){
+		var a=_getid('progress');
+		var b=_getid('progress2');
+		b.innerHTML=gettime(a.value)+'/'+gettime(a.max);
+	}
+}
+function volume_onchange(flag){
+	var v=_getid('volume').value;
+	if(player) player.volume=v;
+	_getid('volume2').innerHTML=v;
+	setstorage('c_volume',v);
+	var c=_getid("audio5");
+	if(!flag && c) c.volume=parseInt(v)/100;
+}
+function loop_onchange(){
+	var v=_getid('loop').value;
+	setstorage('c_loop',v);
+}
+
+function player_init(){
+	_getid("dfile1").innerHTML='<input type="file" id="fileload1" name="files[]" multiple style="width:220px" title="Get audio files from your computer. Drop files on this page.">';
+	_getid('fileload1').onchange=function(e){
+		if(!e || !e.target){
+			alert("This browser does not support.");
+			return;
+		}
+		handleFileSelect(e.target.files);
+	}
+	var holder = document;
+	holder.ondragover = function(e){ 
+		_getid('divopen').className = 'hover'; 
+		try{var ua=navigator.userAgent;
+			if(ua && ua.indexOf("Chrome")>=0){					
+				if(e.originalEvent) e = e.originalEvent;
+				if(e.dataTransfer){
+					var b = e.dataTransfer.effectAllowed;
+					e.dataTransfer.dropEffect = ('move' === b || 'linkMove' === b) ? 'move' : 'copy';
+				}
+			}
+		}catch(err){}
+		return false; 
+	};
+	holder.ondragend = function(){ _getid('divopen').className = '';return false; };
+	holder.ondrop = function (e){
+		_getid('divopen').className = '';
+		e.preventDefault();				
+		handleFileSelect(e.dataTransfer.files);
+		return false;
+	};
+	//if(navigator.userAgent && navigator.userAgent.toLowerCase().indexOf("windows")>=0){
+		var a=_getid('fileload1');
+		var arr2=[];
+		var arr=g_supportimgs.split(',');
+		for(var i=0; i <= arr.length-1; i++){
+			var s=trim(arr[i]);
+			if(s){
+				arr2.push('.'+s);
+			}
+		}
+		a.setAttribute("accept",arr2.join(','));
+	//}
+
+	_getid("attachment").onkeydown=function(e){
+		if(!e) e=window.event;
+		var code=e.keyCode;
+		var press_ctrl=typeof e.modifiers=='undefined'?e.ctrlKey:e.modifiers&Event.CONTROL_MASK;
+		var press_alt=typeof e.modifiers=='undefined'?e.altKey:e.modifiers&Event.ALT_MASK;
+		var press_shift=typeof e.modifiers=='undefined'?e.shiftKey:e.modifiers&Event.SHIFT_MASK;			
+		var flag=false;
+		if (press_alt && !press_ctrl && !press_shift){
+			flag=true;
+			if (code==38){		
+				attach_move(0);
+			}else if (code==40){
+				attach_move(1);
+			}else{
+				flag=false;
+			}
+		}else if (!press_alt && !press_ctrl && !press_shift){
+			flag=true;
+			if(code==46){	
+				attach_delete();
+			}else if(code==13){	
+				player_play();
+			}else{
+				flag=false;
+			}
+		}
+		if(flag){
+    		if (e.preventDefault) {e.preventDefault(); e.stopPropagation();}
+			else {e.returnValue = false; e.cancelBubble = true;}		
+		}
+	}
+	
+	var s=getstorage('c_volume') || 50;
+	_getid('volume').value=s;
+	var s=getstorage('c_loop') || 0;
+	_getid('loop').value=s;
+	volume_onchange();
+	var s=getstorage('c_encoding') || '';
+	_getid('c_encoding').value=s;
+
+	webaudio=window.AudioContext || window.webkitAudioContext;
+	if(!webaudio){
+		player_log('This browser does not supported HTML5 Web Audio. Support only mp3, m4a, mp4, wav format.','error');
+	}	
+}
+player_init();
+
+function openWindow(url, name, w, h) {
+  var winX = 0;
+  var winY = 0;
+  if (parseInt(navigator.appVersion) >= 4) {
+    winX = (screen.availWidth - w)*.5;
+    winY = (screen.availHeight - h)*.5;
+  }
+  var features = 'width=' + w + ',height=' + h + ',left=' + winX + ',top=' + winY +', resizable=yes, scrollbars=yes';
+  window.open(url, name, features);
+}
+function proc_opensetting(){
+	if(!window.JSON || !window.localStorage){
+		alert("Your browser is not supported.");
+		return;
+	}
+	openWindow("setting.php?userId="+(gd_userId || ''),"",550,290);
+}
+var searchdata={};
+function player_search(event,control){
+	if(control){
+		//if(event.keyCode<46)return;		
+		if(!event) event=window.event;
+		if(event && (event.keyCode==38 || event.keyCode==40)){
+			var a=_getid('attachment');
+			if(a.selectedIndex>=0){
+				a.focus();
+			}
+		}
+		return;		
+	}
+	var q=trim(_getid('squery').value);
+	if(!q)return;
+
+	q=q.toLowerCase();
+	var sindex=-1;
+	if(searchdata.query==q) sindex=searchdata.index;
+	searchdata.query=q;
+
+	var s;
+	var a=_getid("attachment");
+	for(var i = 0; i <= a.options.length-1; i++){
+		if(i<=sindex)continue;
+		s=(a.options[i].text || '').toLowerCase();
+		if(s.indexOf(q)>=0){
+			for(var j = 0; j <= a.options.length-1; j++){
+				if(a.options[j].selected) a.options[j].selected=false;
+			}
+			a.selectedIndex=i;
+			searchdata.index=i;
+			return;
+		}
+	}
+	searchdata.index=-1;
+	if(!event || event.keyCode==13){
+		show_message("No results found.");
+	}
+}
+function proc_sort(){
+	//var answer=confirm("If you sort a playlist, You can not revert to the previous list.\n\nAre you sure?");				
+	//if(!answer)return;
+	var st=_getid('sorttype').value;
+		gd_files.sort(function(a,b){
+			var a1,b1,ret;
+			if(st==0 || st==1){
+				a1=a.resp.title;
+				b1=b.resp.title;
+				if(a1>b1) ret=1;
+				else if(a1<b1) ret=-1;
+				else ret=0;
+				if(st==1) ret=ret*-1;
+				return ret;
+			}else if(st==2 || st==3){
+				a1=a.resp.fileSize;
+				b1=b.resp.fileSize;
+				if(a1>b1) ret=1;
+				else if(a1<b1) ret=-1;
+				else ret=0;
+				if(st==3) ret=ret*-1;
+				return ret;
+			}else if(st==4){
+				a1=a.idx;
+				b1=b.idx;
+				if(a1>b1) ret=1;
+				else if(a1<b1) ret=-1;
+				else ret=0;
+				return ret;
+			}
+		});
+
+		var d,s;
+		var a=_getid("attachment");
+		for(var i=a.options.length-1;i>=0;i--) a.remove(i);
+		for(var i = 0; i <= gd_files.length-1; i++){
+			d=gd_files[i];
+			var c=document.createElement("option");
+			c.value=d.idx;
+			s='';
+			if(d.parent) s+=d.parent+'/';
+			s=s+d.resp.title+' ('+getsize(d.resp.fileSize)+')';	
+			if(d.f) s+=' (Local File)';
+			c.appendChild(document.createTextNode(s));		 
+			a.appendChild(c);		
+		}		
+	gd_count();		
+}
+</script>
+
+</body>
+</html>
